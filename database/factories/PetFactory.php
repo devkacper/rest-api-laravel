@@ -21,8 +21,8 @@ class PetFactory extends Factory
         $status = PetStatusEnum::cases();
         return [
             'category_id' => rand(1,3),
-            'name' => fake()->userName(),
-            'photoUrls' => null,
+            'name' => fake()->userName,
+            'photoUrls' => fake()->imageUrl,
             'status' => $status[array_rand($status)]->value,
         ];
     }
