@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PetRequest;
+use App\Http\Requests\StatusRequest;
 use App\Models\Pet;
 use App\Services\PetService;
 
@@ -68,5 +69,18 @@ class PetController extends Controller
         return response([
             'message' => 'Selected pet was deleted.'
         ], 200);
+    }
+
+    /**
+     * Return Pet resource with specific status.
+     *
+     * @param StatusRequest $request
+     * @return string
+     */
+    public function findByStatus(StatusRequest $request)
+    {
+        $pets = $this->petService->getByStatus($request->safe()->status);
+
+        return $pets;
     }
 }

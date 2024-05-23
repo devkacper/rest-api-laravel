@@ -105,4 +105,23 @@ class PetTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    /**
+     * Test of finding Pet by status.
+     *
+     * @return void
+     */
+    public function testFindPetsByStatus()
+    {
+        $status = PetStatusEnum::cases()[array_rand(PetStatusEnum::cases())]->value;
+
+        $pet = Pet::where('status', $status)->limit(1)->first();
+
+        $response = $this->get(route('findByStatus', [
+            'status' => $status
+        ]));
+
+        $response->assertSee($pet->name);
+        $response->assertStatus(200);
+    }
 }

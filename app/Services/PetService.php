@@ -70,4 +70,16 @@ class PetService
 
         return $categories;
     }
+
+    /**
+     * Get Pets by status.
+     *
+     * @return void
+     */
+    public function getByStatus($status)
+    {
+        $pets = Pet::with('category', 'tags')->where('status', $status)->get();
+
+        return $pets;
+    }
 }
