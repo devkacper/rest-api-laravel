@@ -7,6 +7,13 @@ use App\Models\Pet;
 
 class PetService
 {
+    public function getPets()
+    {
+        $pets = Pet::all();
+
+        return $pets;
+    }
+
     /**
      * Find pet by ID.
      *
@@ -61,5 +68,17 @@ class PetService
     public function deletePet($pet)
     {
         return $pet->delete();
+    }
+
+    /**
+     * Return pet categories.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getPetCategories()
+    {
+        $categories = Category::all();
+
+        return $categories;
     }
 }

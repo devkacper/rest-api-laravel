@@ -49,8 +49,10 @@ class PetController extends Controller
      */
     public function update(Pet $pet, PetRequest $request)
     {
-        $data = ['pet' => $pet, 'request' => $request];
-        $pet = $this->petService->updatePet($data);
+        $pet = $this->petService->updatePet([
+            'pet' => $pet,
+            'request' => $request->safe()->all()
+        ]);
 
         return response($pet, 200);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Api;
+namespace Tests\Feature;
 
 use App\Enum\PetStatusEnum;
 use App\Models\Category;
@@ -10,23 +10,37 @@ use Tests\TestCase;
 class PetTest extends TestCase
 {
     /**
-     * Test of selecting specific Pet.
+     * Test of view with Pet resources.
      *
      * @return void
      */
-    public function testSelectingPet(): void
+    public function testPetsResourcesView(): void
     {
         $pet = Pet::inRandomOrder()->limit(1)->first();
 
-        $response = $this->get(route('pet.show', $pet));
+        $response = $this->get('/');
 
-        $this->assertEquals($response->original['id'], $pet->id);
-
+        $response->assertSee($pet->name);
+        $response->assertSee('Nazwa');
         $response->assertStatus(200);
     }
 
     /**
-     * Test of adding a new Pet to the database store.
+     * Test of the form view for creating a new Pet resource.
+     *
+     * @return void
+     */
+    public function testCreatePetView()
+    {
+        $response = $this->get(route('pets.create'));
+
+        $response->assertSee('name');
+        $response->assertStatus(200);
+
+    }
+
+    /**
+     * Test of adding a new Pet to the database store from form on create page view.
      *
      * @return void
      */
@@ -39,7 +53,7 @@ class PetTest extends TestCase
             'category' => Category::inRandomOrder()->pluck('name')->first(),
         ];
 
-        $response = $this->post(route('pet.store'), $attributes);
+        $response = $this->post(route('pets.store'), $attributes);
 
         $this->assertDatabaseHas('pets', [
             'status' => $attributes['status'],
@@ -48,15 +62,32 @@ class PetTest extends TestCase
             'category_id' => Category::where('name', $attributes['category'])->pluck('id')->first(),
         ]);
 
+        $response->assertSessionHas('success', 'Pomyślnie utworzono nowy rekord.');
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Test of edit view with specified Pet resource.
+     *
+     * @return void
+     */
+    public function testEditPetView(): void
+    {
+        $pet = Pet::inRandomOrder()->limit(1)->first();
+
+        $response = $this->get(route('pets.edit', $pet));
+
+        $response->assertSee($pet->name);
+        $response->assertSee('ZAPISZ');
         $response->assertStatus(200);
     }
 
     /**
-     * Test of update an existing Pet.
+     * Test of successfully update an existing Pet from form on edit page view.
      *
      * @return void
      */
-    public function testUpdatePet()
+    public function testUpdatePet(): void
     {
         $pet = Pet::inRandomOrder()->limit(1)->first();
         $status = PetStatusEnum::cases()[array_rand(PetStatusEnum::cases())]->value;
@@ -69,7 +100,7 @@ class PetTest extends TestCase
             'status' => $status,
         ];
 
-        $response = $this->put(route('pet.update', $pet), $attributes);
+        $response = $this->put(route('pets.update', $pet), $attributes);
 
         $this->assertDatabaseHas('pets', [
             'id' => $attributes['id'],
@@ -87,22 +118,24 @@ class PetTest extends TestCase
             'status' => $pet['status'],
         ]);
 
-        $response->assertStatus(200);
+        $response->assertSessionHas('success', 'Pomyślnie zapisano zmiany.');
+        $response->assertStatus(302);
     }
 
     /**
-     * Test of delete a Pet.
+     * Test of delete a Pet by web form request.
      *
      * @return void
      */
-    public function testDeletePet()
+    public function testDeletePet(): void
     {
         $pet = Pet::inRandomOrder()->limit(1)->first();
 
-        $response = $this->delete(route('pet.destroy', $pet));
+        $response = $this->delete(route('pets.destroy', $pet));
 
         $this->assertDatabaseMissing('pets', $pet->getAttributes());
 
-        $response->assertStatus(200);
+        $response->assertSessionHas('success', 'Usunięto wybraną pozycję.');
+        $response->assertStatus(302);
     }
 }

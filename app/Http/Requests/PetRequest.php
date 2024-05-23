@@ -26,7 +26,7 @@ class PetRequest extends FormRequest
         return [
             'status' => ['required', Rule::in(array_column(PetStatusEnum::cases(), 'value'))],
             'name' => 'required',
-            'photoUrls' => 'required',
+            'photoUrls' => 'nullable',
             'category' => ['exists:category,name', 'required'],
             'tags' => 'nullable',
         ];
