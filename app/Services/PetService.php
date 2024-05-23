@@ -9,20 +9,9 @@ class PetService
 {
     public function getPets()
     {
-        $pets = Pet::all();
+        $pets = Pet::with('tags')->get();
 
         return $pets;
-    }
-
-    /**
-     * Find pet by ID.
-     *
-     * @param $pet
-     * @return mixed
-     */
-    public function getPet($pet)
-    {
-        return $pet;
     }
 
     /**

@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label for="tags">Tagi</label>
-                <input type="text" name="tags" class="form-control" id="tags" {{ isset($pet) and $pet->tags->isNotEmpty() ? 'value='.$pet->tags : 'placeholder=Tagi'  }}>
+                <input type="text" name="tags" class="form-control" id="tags" {{ isset($pet) and $pet->tags->isNotEmpty() ? '' : 'placeholder=Tagi'  }}>
             </div>
             <div class="form-group">
                 <label for="status">Status</label>

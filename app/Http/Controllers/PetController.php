@@ -38,7 +38,7 @@ class PetController extends Controller
      */
     public function store(PetRequest $request)
     {
-        $pet = $this->petService->storePet($request->safe()->all());
+        $this->petService->storePet($request->safe()->all());
 
         return redirect()->back()->with('success', 'Pomyślnie utworzono nowy rekord.');
     }

@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Events\CreatingPet;
+use App\Events\Pet\CreatedPet;
+use App\Events\Pet\UpdatingPet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,11 @@ class Pet extends Model
     public $timestamps = false;
 
     public $fillable = ['category_id', 'name', 'photoUrls', 'status'];
+
+    protected $dispatchesEvents = [
+        'created' => CreatedPet::class,
+        'updating' => UpdatingPet::class,
+    ];
 
     /**
      * Pet category relationship.
@@ -26,6 +32,6 @@ class Pet extends Model
 
     public function tags()
     {
-        return $this->hasMany(PetTags::class);
+        return $this->belongsToMany(Tag::class, 'tag_object', 'pet_id', 'tag_id');
     }
 }

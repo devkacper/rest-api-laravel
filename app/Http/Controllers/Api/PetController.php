@@ -35,8 +35,6 @@ class PetController extends Controller
      */
     public function show(Pet $pet)
     {
-        $pet = $this->petService->getPet($pet);
-
         return response($pet, 200);
     }
 

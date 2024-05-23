@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PetTags extends Model
+class TagObject extends Model
 {
-    protected $table = 'pet_tags';
+    protected $table = 'tag_object';
     public $timestamps = false;
+
+    protected $fillable = ['tag_id', 'pet_id'];
 }
