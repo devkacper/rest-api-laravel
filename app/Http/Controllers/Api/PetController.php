@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImageRequest;
 use App\Http\Requests\PetRequest;
 use App\Http\Requests\StatusRequest;
 use App\Models\Pet;
@@ -82,5 +83,22 @@ class PetController extends Controller
         $pets = $this->petService->getByStatus($request->safe()->status);
 
         return $pets;
+    }
+
+    /**
+     * Store Pet image.
+     *
+     * @param ImageRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response
+     */
+    public function uploadImage(ImageRequest $request, Pet $pet)
+    {
+        $image = $request->safe()->image;
+
+        $this->petService->uploadPetImage($image, $pet);
+
+        return response([
+            'message' => 'Zdjęcie zostało pomyślnie przesłane.'
+        ], 200);
     }
 }

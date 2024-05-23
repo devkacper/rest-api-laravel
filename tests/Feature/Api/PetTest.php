@@ -5,6 +5,7 @@ namespace Feature\Api;
 use App\Enum\PetStatusEnum;
 use App\Models\Category;
 use App\Models\Pet;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class PetTest extends TestCase
@@ -113,15 +114,30 @@ class PetTest extends TestCase
      */
     public function testFindPetsByStatus()
     {
-        $status = PetStatusEnum::cases()[array_rand(PetStatusEnum::cases())]->value;
-
-        $pet = Pet::where('status', $status)->limit(1)->first();
+        $pet = Pet::find(1)->first();
 
         $response = $this->get(route('findByStatus', [
-            'status' => $status
+            'status' => $pet->status
         ]));
 
         $response->assertSee($pet->name);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Test of upload Pet image.
+     *
+     * @return void
+     */
+    public function testUploadPetImage()
+    {
+        $image = UploadedFile::fake()->image('pet.jpg');
+
+        $response = $this->post('/api/pet/1/uploadImage', [
+            'image' => $image
+        ]);
+
+        $response->assertSee('message');
         $response->assertStatus(200);
     }
 }

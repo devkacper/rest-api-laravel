@@ -25,3 +25,20 @@ Delete a Pet:
 DELETE: /api/pet/{petId}
 ```
 
+Finds Pets by status:
+
+- available
+- sold
+- pending
+
+```bash
+GET: /api/pet/findByStatus
+```
+
+Uploads an image (mimes - png, jpg, jpeg, max file size: 2 MB):
+
+```bash
+POST: /api/pet/{id}/uploadImage
+```
+
+

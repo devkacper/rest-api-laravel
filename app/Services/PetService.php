@@ -82,4 +82,22 @@ class PetService
 
         return $pets;
     }
+
+    /**
+     * Upload Pet image in app storage.
+     *
+     * @param $image
+     * @param $pet
+     * @return void
+     */
+    public function uploadPetImage($image, $pet)
+    {
+        $imageName = time().'.'.$image->extension();
+
+        $image->storeAs('public/pets', $imageName);
+
+        $pet->update([
+            'photoUrls' => $imageName
+        ]);
+    }
 }

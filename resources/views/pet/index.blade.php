@@ -21,7 +21,7 @@
             <tbody class="text-center">
             @foreach($pets as $pet)
                 <tr>
-                    <td><img style="width: 40px; height: 40px" src="{{ !empty($pet['photoUrls']) ? $pet['photoUrls'] : 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/afda6796352685.5eac47879e92f.jpg' }}" alt="Zdjęcie"/></td>
+                    <td><img style="width: 40px; height: 40px" src="{{ !empty($pet['photoUrls']) ? 'storage/pets/'.$pet['photoUrls'] : 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/afda6796352685.5eac47879e92f.jpg' }}" alt="Zdjęcie"/></td>
                     <td>{{ $pet['name'] }}</td>
                     <td>{{ $pet['category']['name'] }}</td>
                     <td>
