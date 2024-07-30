@@ -40,12 +40,14 @@ class PetService
      */
     public function updatePet($data)
     {
-        return $data['pet']->update([
+        $data['pet']->update([
             'category_id' => Category::where('name', $data['request']['category'])->pluck('id')->first(),
             'name' => $data['request']['name'],
             'photoUrls' => $data['request']['photoUrls'],
             'status' => $data['request']['status'],
         ]);
+
+        $data['pet']->touch();
     }
 
     /**
